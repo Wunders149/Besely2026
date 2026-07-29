@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Playground · Learn English for Fun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFCF5;
+    --ink:#2D2A32;
+    --sun:#FFD23F;
+    --coral:#FF6B6B;
+    --teal:#3DBFAD;
+    --grape:#6C5CE7;
+    --line: rgba(45,42,50,0.12);
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3, .display{ font-family:'Fredoka', sans-serif; font-weight:600; }
+  .mono{ font-family:'Space Mono', monospace; }
+
+  a{ color:inherit; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 6vw;
+    background:rgba(255,252,245,0.85);
+    backdrop-filter:blur(6px);
+    border-bottom:2px solid var(--line);
+  }
+  .logo{
+    font-size:1.3rem;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo span.dot{
+    display:inline-block; width:10px; height:10px; border-radius:50%;
+    background:var(--coral);
+  }
+  .score-badge{
+    font-family:'Space Mono', monospace;
+    background:var(--ink); color:var(--paper);
+    padding:8px 16px; border-radius:999px;
+    font-size:0.85rem; font-weight:700;
+    display:flex; gap:14px;
+  }
+  .score-badge b{ color:var(--sun); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:88vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:6vh 6vw 10vh;
+    overflow:hidden;
+  }
+  .bubble{
+    position:absolute;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    color:var(--ink);
+    background:var(--paper);
+    border:2px solid var(--ink);
+    border-radius:999px;
+    padding:8px 18px;
+    opacity:0.85;
+    animation: drift 16s ease-in-out infinite;
+    user-select:none;
+    pointer-events:none;
+  }
+  @keyframes drift{
+    0%   { transform: translateY(0) rotate(-3deg); }
+    50%  { transform: translateY(-26px) rotate(3deg); }
+    100% { transform: translateY(0) rotate(-3deg); }
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    line-height:1.05;
+    margin:0 0 18px;
+    max-width:14ch;
+    position:relative; z-index:2;
+  }
+  .hero h1 .hi{
+    background:var(--sun);
+    padding:0 10px;
+    border-radius:10px;
+    display:inline-block;
+    transform:rotate(-2deg);
+  }
+  .hero p{
+    font-size:1.15rem;
+    max-width:46ch;
+    color:rgba(45,42,50,0.75);
+    margin:0 0 34px;
+    position:relative; z-index:2;
+  }
+  .cta{
+    position:relative; z-index:2;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.1rem;
+    background:var(--grape);
+    color:var(--paper);
+    border:none;
+    padding:16px 34px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 6px 0 #4b3fb0;
+    transition:transform 0.12s ease;
+  }
+  .cta:active{ transform:translateY(6px); box-shadow:0 0 0 #4b3fb0; }
+  .cta:hover{ transform:translateY(-2px); }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{ padding:8vh 6vw; }
+  .section-head{ text-align:center; margin-bottom:48px; }
+  .section-head .eyebrow{
+    font-family:'Space Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:0.78rem;
+    color:var(--coral);
+    font-weight:700;
+  }
+  .section-head h2{ font-size:clamp(1.8rem,4vw,2.6rem); margin:6px 0 0; }
+
+  /* ---------- GAME PICKER (sticker cards) ---------- */
+  .picker{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .sticker{
+    border-radius:22px;
+    border:3px solid var(--ink);
+    padding:28px 24px;
+    cursor:pointer;
+    background:var(--paper);
+    transition:transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  .sticker:nth-child(1){ transform:rotate(-2deg); }
+  .sticker:nth-child(2){ transform:rotate(1.5deg); }
+  .sticker:nth-child(3){ transform:rotate(-1deg); }
+  .sticker:hover{ transform:rotate(0deg) translateY(-6px); box-shadow:8px 10px 0 var(--ink); }
+  .sticker .icon{ font-size:2.4rem; }
+  .sticker h3{ margin:10px 0 6px; font-size:1.35rem; }
+  .sticker p{ margin:0; font-size:0.95rem; color:rgba(45,42,50,0.7); }
+  .sticker.cards{ background:#FFF1CC; }
+  .sticker.scramble{ background:#FFE1DC; }
+  .sticker.quiz{ background:#DFF6F1; }
+
+  /* ---------- GAME PANELS ---------- */
+  .panel{
+    max-width:640px;
+    margin:0 auto;
+    border:3px solid var(--ink);
+    border-radius:26px;
+    padding:40px clamp(20px,5vw,48px);
+    background:var(--paper);
+    box-shadow:8px 8px 0 var(--line);
+  }
+  .panel-title{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .panel-title h3{ margin:0; font-size:1.5rem; }
+  .tag{
+    font-family:'Space Mono',monospace; font-size:0.78rem;
+    background:var(--ink); color:var(--paper);
+    padding:5px 12px; border-radius:999px;
+  }
+
+  /* Flashcards */
+  .flash-stage{ perspective:1200px; margin-bottom:22px; }
+  .flash-card{
+    position:relative;
+    height:230px;
+    border-radius:20px;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform 0.5s cubic-bezier(.2,.9,.3,1.1);
+  }
+  .flash-card.flipped{ transform:rotateY(180deg); }
+  .face{
+    position:absolute; inset:0;
+    border:3px solid var(--ink);
+    border-radius:20px;
+    backface-visibility:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:20px; text-align:center;
+  }
+  .face.front{ background:var(--sun); }
+  .face.back{ background:var(--teal); color:var(--paper); transform:rotateY(180deg); }
+  .face .word{ font-family:'Fredoka'; font-size:1.9rem; font-weight:700; }
+  .face .pos{ font-family:'Space Mono'; font-size:0.8rem; opacity:0.7; margin-top:4px; }
+  .face .def{ font-size:1.05rem; font-weight:800; margin:10px 0 8px; }
+  .face .ex{ font-style:italic; font-size:0.95rem; }
+  .face .hint{ margin-top:14px; font-size:0.8rem; opacity:0.6; }
+
+  .row-btns{ display:flex; gap:12px; justify-content:center; }
+  .btn{
+    font-family:'Fredoka'; font-weight:600;
+    border:2px solid var(--ink); background:var(--paper);
+    padding:10px 20px; border-radius:999px; cursor:pointer;
+    transition:transform 0.12s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn.primary{ background:var(--grape); color:var(--paper); }
+  .btn.ghost{ background:transparent; }
+
+  /* Scramble */
+  .scramble-letters{
+    display:flex; justify-content:center; gap:8px; flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .letter-tile{
+    width:46px; height:46px;
+    display:flex; align-items:center; justify-content:center;
+    border:2px solid var(--ink); border-radius:10px;
+    font-family:'Space Mono'; font-weight:700; font-size:1.2rem;
+    background:var(--sun);
+  }
+  .scramble-hint{ text-align:center; margin-bottom:18px; color:rgba(45,42,50,0.7); }
+  .scramble-input{
+    display:block; margin:0 auto 18px; width:100%;
+    font-family:'Space Mono'; font-size:1.1rem; text-align:center;
+    padding:12px; border-radius:12px; border:2px solid var(--ink);
+    background:var(--paper); color:var(--ink);
+  }
+  .feedback{ text-align:center; min-height:28px; font-weight:800; margin-bottom:10px; }
+  .feedback.good{ color:#1c8a6e; }
+  .feedback.bad{ color:var(--coral); }
+
+  /* Quiz */
+  .quiz-q{ font-size:1.15rem; font-weight:800; margin-bottom:18px; text-align:center; }
+  .quiz-opts{ display:grid; gap:12px; margin-bottom:14px; }
+  .opt{
+    text-align:left;
+    border:2px solid var(--ink); border-radius:14px;
+    padding:14px 18px; background:var(--paper);
+    cursor:pointer; font-family:'Nunito'; font-weight:700; font-size:1rem;
+    transition:background 0.15s ease, transform 0.1s ease;
+  }
+  .opt:hover{ transform:translateX(3px); }
+  .opt.correct{ background:#c9f2e4; border-color:#1c8a6e; }
+  .opt.wrong{ background:#ffd6d1; border-color:var(--coral); }
+
+  footer{
+    text-align:center; padding:40px 6vw 60px;
+    color:rgba(45,42,50,0.6);
+    font-size:0.9rem;
+  }
+  footer .h{ font-family:'Fredoka'; color:var(--ink); font-size:1.1rem; margin-bottom:6px; }
+
+  @media (max-width:820px){
+    .picker{ grid-template-columns:1fr; }
+    .bubble{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bubble{ animation:none; }
+    .flash-card, .sticker, .cta, .btn, .opt{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo display"><span class="dot"></span>Word Playground</div>
+  <div class="score-badge mono">🔥 <span id="streakVal">0</span> streak &nbsp;|&nbsp; ⭐ <b id="scoreVal">0</b> pts</div>
+</nav>
+
+<section class="hero">
+  <span class="bubble" style="top:12%; left:8%;  animation-delay:0s;">giggle</span>
+  <span class="bubble" style="top:24%; left:78%; animation-delay:2s;">cozy</span>
+  <span class="bubble" style="top:65%; left:14%; animation-delay:4s;">sparkle</span>
+  <span class="bubble" style="top:70%; left:72%; animation-delay:1s;">wander</span>
+  <span class="bubble" style="top:8%;  left:45%; animation-delay:3s;">breeze</span>
+
+  <h1>Let's play<br><span class="hi">with English!</span></h1>
+  <p>Flip cards, unscramble words, and beat quizzes — three tiny games that make new words stick, no textbook required.</p>
+  <button class="cta" onclick="document.getElementById('picker').scrollIntoView({behavior:'smooth'})">Start Playing 🎮</button>
+</section>
+
+<section id="picker">
+  <div class="section-head">
+    <div class="eyebrow">Pick a game</div>
+    <h2>Three ways to play today</h2>
+  </div>
+  <div class="picker">
+    <div class="sticker cards" onclick="showGame('flash')">
+      <div class="icon">🃏</div>
+      <h3>Flashcards</h3>
+      <p>Flip cards to reveal meanings and example sentences.</p>
+    </div>
+    <div class="sticker scramble" onclick="showGame('scramble')">
+      <div class="icon">🔤</div>
+      <h3>Word Scramble</h3>
+      <p>Unjumble the letters before you run out of tries.</p>
+    </div>
+    <div class="sticker quiz" onclick="showGame('quiz')">
+      <div class="icon">🧠</div>
+      <h3>Quick Quiz</h3>
+      <p>Answer fun multiple-choice questions on grammar and words.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLASHCARDS -->
+<section id="flash-panel" style="display:none;">
+  <div class="panel">
+    <div class="panel-title">
+      <h3>🃏 Flashcards</h3>
+      <span class="tag mono" id="flashCounter">1 / 10</span>
+    </div>
+    <div class="flash-stage">
+      <div class="flash-card" id="flashCard" onclick="flipCard()">
+        <div class="face front">
+          <div class="word" id="flashWord"></div>
+          <div class="pos" id="flashPos"></div>
+          <div class="hint">tap to reveal</div>
+        </div>
+        <div class="face back">
+          <div class="def" id="flashDef"></div>
+          <div class="ex" id="flashEx"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row-btns">
+      <button class="btn ghost" onclick="prevCard()">◀ Back</button>
+      <button class="btn primary" onclick="nextCard()">Next ▶</button>
+    </div>
+  </div>
+</section>
+
+<!-- SCRAMBLE -->
+<section id="scramble-panel" style="display:none;">
+  <div class="panel">
+    <div class="panel-title">
+      <h3>🔤 Word Scramble</h3>
+      <span class="tag mono" id="scrambleCounter">1 / 8</span>
+    </div>
+    <div class="scramble-letters" id="scrambleLetters"></div>
+    <div class="scramble-hint" id="scrambleHint"></div>
+    <input class="scramble-input" id="scrambleInput" maxlength="14" placeholder="type your answer…" autocomplete="off" onkeydown="if(event.key==='Enter')checkScramble()">
+    <div class="feedback" id="scrambleFeedback"></div>
+    <div class="row-btns">
+      <button class="btn ghost" onclick="newScramble()">🔀 Reshuffle</button>
+      <button class="btn primary" onclick="checkScramble()">Check ✓</button>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz-panel" style="display:none;">
+  <div class="panel">
+    <div class="panel-title">
+      <h3>🧠 Quick Quiz</h3>
+      <span class="tag mono" id="quizCounter">1 / 8</span>
+    </div>
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-opts" id="quizOpts"></div>
+    <div class="feedback" id="quizFeedback"></div>
+    <div class="row-btns">
+      <button class="btn primary" id="quizNextBtn" onclick="nextQuiz()" style="display:none;">Next Question ▶</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="h">Keep going — a little play every day adds up. 🌱</div>
+  Made for anyone who'd rather learn English by playing than memorizing.
+</footer>
+
+<script>
+/* ---------------- SCORE ---------------- */
+let score = 0, streak = 0;
+function addPoint(correct){
+  if(correct){ score += 10; streak += 1; } else { streak = 0; }
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('streakVal').textContent = streak;
+}
+
+function showGame(name){
+  ['flash','scramble','quiz'].forEach(n=>{
+    document.getElementById(n+'-panel').style.display = (n===name)?'block':'none';
+  });
+  document.getElementById(name+'-panel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ---------------- FLASHCARDS ---------------- */
+const flashData = [
+  {word:"Cozy", pos:"adjective", def:"warm and comfortable", ex:"The cabin felt cozy by the fire."},
+  {word:"Wander", pos:"verb", def:"to walk with no fixed direction", ex:"We wandered through the old town."},
+  {word:"Curious", pos:"adjective", def:"eager to learn or know", ex:"The cat was curious about the box."},
+  {word:"Giggle", pos:"verb", def:"to laugh softly", ex:"She giggled at the joke."},
+  {word:"Breeze", pos:"noun", def:"a gentle wind", ex:"A cool breeze drifted through the window."},
+  {word:"Sparkle", pos:"verb", def:"to shine with small flashes of light", ex:"The lake sparkled in the sun."},
+  {word:"Stubborn", pos:"adjective", def:"refusing to change your mind", ex:"My brother is too stubborn to apologize."},
+  {word:"Journey", pos:"noun", def:"a long trip", ex:"Our journey across the country took three days."},
+  {word:"Whisper", pos:"verb", def:"to speak very quietly", ex:"She whispered the secret to me."},
+  {word:"Grateful", pos:"adjective", def:"feeling thankful", ex:"I'm grateful for your help."}
+];
+let flashIndex = 0;
+function renderFlash(){
+  const c = flashData[flashIndex];
+  document.getElementById('flashWord').textContent = c.word;
+  document.getElementById('flashPos').textContent = c.pos;
+  document.getElementById('flashDef').textContent = c.def;
+  document.getElementById('flashEx').textContent = c.ex;
+  document.getElementById('flashCounter').textContent = (flashIndex+1)+" / "+flashData.length;
+  document.getElementById('flashCard').classList.remove('flipped');
+}
+function flipCard(){ document.getElementById('flashCard').classList.toggle('flipped'); }
+function nextCard(){ flashIndex = (flashIndex+1) % flashData.length; renderFlash(); }
+function prevCard(){ flashIndex = (flashIndex-1+flashData.length) % flashData.length; renderFlash(); }
+renderFlash();
+
+/* ---------------- SCRAMBLE ---------------- */
+const scrambleData = [
+  {word:"APPLE", hint:"A fruit that keeps the doctor away."},
+  {word:"SCHOOL", hint:"A place where you go to learn."},
+  {word:"FRIEND", hint:"Someone you like and trust."},
+  {word:"WATER", hint:"You drink this every day."},
+  {word:"HAPPY", hint:"How you feel when things go well."},
+  {word:"GARDEN", hint:"A place where flowers and vegetables grow."},
+  {word:"MUSIC", hint:"Something you listen to and dance to."},
+  {word:"RAINBOW", hint:"Colorful arc that appears after rain."}
+];
+let scrambleIndex = 0;
+function shuffleWord(w){
+  let arr = w.split('');
+  let shuffled;
+  do{
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    shuffled = arr.join('');
+  } while(shuffled === w);
+  return shuffled;
+}
+function newScramble(){
+  const item = scrambleData[scrambleIndex];
+  const shuffled = shuffleWord(item.word);
+  const box = document.getElementById('scrambleLetters');
+  box.innerHTML = '';
+  shuffled.split('').forEach(l=>{
+    const tile = document.createElement('div');
+    tile.className = 'letter-tile';
+    tile.textContent = l;
+    box.appendChild(tile);
+  });
+  document.getElementById('scrambleHint').textContent = "💡 " + item.hint;
+  document.getElementById('scrambleInput').value = '';
+  document.getElementById('scrambleFeedback').textContent = '';
+  document.getElementById('scrambleCounter').textContent = (scrambleIndex+1)+" / "+scrambleData.length;
+}
+function checkScramble(){
+  const item = scrambleData[scrambleIndex];
+  const guess = document.getElementById('scrambleInput').value.trim().toUpperCase();
+  const fb = document.getElementById('scrambleFeedback');
+  if(guess === item.word){
+    fb.textContent = "Nice one! 🎉";
+    fb.className = "feedback good";
+    addPoint(true);
+    setTimeout(()=>{
+      scrambleIndex = (scrambleIndex+1) % scrambleData.length;
+      newScramble();
+    }, 900);
+  } else {
+    fb.textContent = "Almost! Try again 💪";
+    fb.className = "feedback bad";
+    addPoint(false);
+  }
+}
+newScramble();
+
+/* ---------------- QUIZ ---------------- */
+const quizData = [
+  {q:"She ___ to the store every Saturday.", opts:["go","goes","going","gone"], correct:1},
+  {q:'What\'s the opposite of "happy"?', opts:["Sad","Big","Fast","Kind"], correct:0},
+  {q:"I have ___ apple.", opts:["a","an","the","(no article)"], correct:1},
+  {q:'Which word means "very tired"?', opts:["Excited","Curious","Exhausted","Calm"], correct:2},
+  {q:"They have already ___ dinner.", opts:["finish","finishing","finished","finishes"], correct:2},
+  {q:'A synonym for "big" is:', opts:["Tiny","Huge","Quick","Quiet"], correct:1},
+  {q:"Which sentence is correct?", opts:["He don\'t like coffee.","He doesn\'t likes coffee.","He doesn\'t like coffee.","He not like coffee."], correct:2},
+  {q:'What\'s the past tense of "go"?', opts:["Goed","Went","Gone","Going"], correct:1}
+];
+let quizIndex = 0;
+function renderQuiz(){
+  const item = quizData[quizIndex];
+  document.getElementById('quizQ').textContent = item.q;
+  document.getElementById('quizCounter').textContent = (quizIndex+1)+" / "+quizData.length;
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNextBtn').style.display = 'none';
+  const box = document.getElementById('quizOpts');
+  box.innerHTML = '';
+  item.opts.forEach((opt, i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.onclick = ()=>answerQuiz(i, btn);
+    box.appendChild(btn);
+  });
+}
+function answerQuiz(i, el){
+  const item = quizData[quizIndex];
+  const opts = document.querySelectorAll('#quizOpts .opt');
+  opts.forEach(o=>o.onclick=null);
+  const fb = document.getElementById('quizFeedback');
+  if(i === item.correct){
+    el.classList.add('correct');
+    fb.textContent = "Correct! 🎉";
+    fb.className = "feedback good";
+    addPoint(true);
+  } else {
+    el.classList.add('wrong');
+    opts[item.correct].classList.add('correct');
+    fb.textContent = "Not quite — here's the right one.";
+    fb.className = "feedback bad";
+    addPoint(false);
+  }
+  document.getElementById('quizNextBtn').style.display = 'inline-block';
+}
+function nextQuiz(){
+  quizIndex = (quizIndex+1) % quizData.length;
+  renderQuiz();
+}
+renderQuiz();
+</script>
+</body>
+</html>

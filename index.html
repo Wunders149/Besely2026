@@ -266,10 +266,57 @@
   }
   footer .h{ font-family:'Fredoka'; color:var(--ink); font-size:1.1rem; margin-bottom:6px; }
 
+  /* ================= RESPONSIVE ================= */
   @media (max-width:820px){
     .picker{ grid-template-columns:1fr; }
     .bubble{ display:none; }
   }
+
+  @media (max-width:600px){
+    nav{ padding:12px 5vw; gap:8px; }
+    .logo{ font-size:1.05rem; }
+    .logo span.dot{ width:8px; height:8px; }
+    .score-badge{ font-size:0.7rem; padding:6px 10px; gap:8px; white-space:nowrap; }
+
+    .hero{ min-height:auto; padding:8vh 6vw 8vh; }
+    .hero h1{ font-size:2.3rem; max-width:none; }
+    .hero p{ font-size:1rem; max-width:32ch; }
+    .cta{ width:100%; padding:15px 0; font-size:1rem; }
+
+    section{ padding:7vh 5vw; }
+    .section-head{ margin-bottom:32px; }
+    .section-head h2{ font-size:1.6rem; }
+
+    .picker{ gap:18px; }
+    .sticker{ padding:22px 20px; box-shadow:5px 5px 0 var(--ink); }
+    .sticker:hover{ transform:rotate(0deg) translateY(-3px); box-shadow:6px 7px 0 var(--ink); }
+
+    .panel{ padding:26px 18px; border-radius:20px; box-shadow:5px 5px 0 var(--line); }
+    .panel-title h3{ font-size:1.2rem; }
+
+    .flash-card{ height:280px; }
+    .face{ padding:16px; }
+    .face .word{ font-size:1.6rem; }
+    .face .def{ font-size:0.95rem; }
+    .face .ex{ font-size:0.88rem; }
+
+    .row-btns{ flex-direction:column; }
+    .row-btns .btn{ width:100%; }
+
+    .letter-tile{ width:38px; height:38px; font-size:1rem; border-radius:8px; }
+    .scramble-input{ font-size:1rem; padding:11px; }
+
+    .quiz-q{ font-size:1.02rem; }
+    .opt{ padding:12px 14px; font-size:0.92rem; }
+
+    footer{ padding:32px 6vw 44px; }
+  }
+
+  @media (max-width:380px){
+    .score-badge{ font-size:0.62rem; padding:5px 8px; gap:6px; }
+    .hero h1{ font-size:1.95rem; }
+  }
+
   @media (prefers-reduced-motion: reduce){
     .bubble{ animation:none; }
     .flash-card, .sticker, .cta, .btn, .opt{ transition:none; }

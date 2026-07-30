@@ -57,6 +57,28 @@
   }
   .score-badge b{ color:var(--sun); }
 
+  /* ---------- APP TAB BAR ---------- */
+  body{ padding-bottom:78px; }
+  .app-tabbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:60;
+    display:flex;
+    background:var(--paper);
+    border-top:2px solid var(--ink);
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom, 0px));
+    box-shadow:0 -4px 14px rgba(0,0,0,0.07);
+  }
+  .tab-btn{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+    background:none; border:none; cursor:pointer;
+    font-family:'Nunito'; font-weight:800; font-size:0.66rem;
+    color:rgba(45,42,50,0.5);
+    padding:6px 2px; border-radius:14px; margin:0 2px;
+    transition:color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+  }
+  .tab-btn .tab-icon{ font-size:1.3rem; line-height:1; }
+  .tab-btn:hover{ color:var(--ink); }
+  .tab-btn.active{ color:var(--ink); background:var(--sun); transform:translateY(-2px); }
+
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
@@ -139,9 +161,9 @@
   /* ---------- GAME PICKER (sticker cards) ---------- */
   .picker{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:28px;
-    max-width:1100px;
+    grid-template-columns:repeat(4, 1fr);
+    gap:24px;
+    max-width:1200px;
     margin:0 auto;
   }
   .sticker{
@@ -156,6 +178,7 @@
   .sticker:nth-child(1){ transform:rotate(-2deg); }
   .sticker:nth-child(2){ transform:rotate(1.5deg); }
   .sticker:nth-child(3){ transform:rotate(-1deg); }
+  .sticker:nth-child(4){ transform:rotate(2deg); }
   .sticker:hover{ transform:rotate(0deg) translateY(-6px); box-shadow:8px 10px 0 var(--ink); }
   .sticker .icon{ font-size:2.4rem; }
   .sticker h3{ margin:10px 0 6px; font-size:1.35rem; }
@@ -163,6 +186,7 @@
   .sticker.cards{ background:#FFF1CC; }
   .sticker.scramble{ background:#FFE1DC; }
   .sticker.quiz{ background:#DFF6F1; }
+  .sticker.exam{ background:#EAE1FF; }
 
   /* ---------- GAME PANELS ---------- */
   .panel{
@@ -212,7 +236,7 @@
   .face .ex{ font-style:italic; font-size:0.95rem; }
   .face .hint{ margin-top:14px; font-size:0.8rem; opacity:0.6; }
 
-  .row-btns{ display:flex; gap:12px; justify-content:center; }
+  .row-btns{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
   .btn{
     font-family:'Fredoka'; font-weight:600;
     border:2px solid var(--ink); background:var(--paper);
@@ -222,6 +246,34 @@
   .btn:hover{ transform:translateY(-2px); }
   .btn.primary{ background:var(--grape); color:var(--paper); }
   .btn.ghost{ background:transparent; }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; transform:none; }
+  .btn.small{ padding:8px 16px; font-size:0.85rem; }
+
+  .tag.live{ background:var(--teal); }
+  .tag.loading{ background:var(--grape); }
+
+  /* Lookup row (flashcards) */
+  .lookup-row{ display:flex; gap:10px; margin-bottom:20px; }
+  .lookup-input{
+    flex:1; font-family:'Nunito'; font-size:1rem;
+    padding:12px 16px; border-radius:999px; border:2px solid var(--ink);
+    background:var(--paper); color:var(--ink);
+  }
+  .lookup-status{
+    text-align:center; min-height:20px; font-size:0.88rem;
+    margin:-8px 0 14px; color:rgba(45,42,50,0.65);
+  }
+  .lookup-status.err{ color:var(--coral); font-weight:700; }
+  .audio-btn{
+    display:none; margin:0 auto 18px; 
+    font-family:'Space Mono'; font-weight:700; font-size:0.85rem;
+    border:2px solid var(--ink); background:var(--sun);
+    padding:8px 18px; border-radius:999px; cursor:pointer;
+  }
+  .source-note{ text-align:center; font-size:0.78rem; color:rgba(45,42,50,0.5); margin-top:-8px; }
+  .related{ margin-top:12px; font-size:0.82rem; opacity:0.85; }
+  .related b{ font-weight:800; }
+  .feedback-extra{ text-align:center; font-size:0.88rem; color:rgba(45,42,50,0.7); margin:-4px 0 10px; min-height:18px; }
 
   /* Scramble */
   .scramble-letters{
@@ -260,6 +312,25 @@
   .opt.correct{ background:#c9f2e4; border-color:#1c8a6e; }
   .opt.wrong{ background:#ffd6d1; border-color:var(--coral); }
 
+  /* Exam */
+  .exam-intro p{ text-align:center; color:rgba(45,42,50,0.75); margin:0 0 14px; line-height:1.5; }
+  .exam-tier-preview{ display:flex; justify-content:center; gap:10px; margin:0 0 24px; flex-wrap:wrap; }
+  .exam-tier-preview .tag{ background:transparent; border:2px solid var(--ink); color:var(--ink); }
+  .exam-progress-track{ height:10px; border-radius:999px; background:var(--line); overflow:hidden; margin-bottom:14px; }
+  .exam-progress-fill{ height:100%; background:var(--grape); width:0%; transition:width 0.3s ease; }
+  .exam-timer{ text-align:center; font-family:'Space Mono'; font-weight:700; font-size:0.95rem; margin-bottom:12px; color:rgba(45,42,50,0.6); }
+  .exam-timer.low{ color:var(--coral); }
+  .exam-level{ font-family:'Fredoka'; font-size:2.1rem; text-align:center; margin-bottom:6px; }
+  .exam-level-desc{ text-align:center; color:rgba(45,42,50,0.72); margin-bottom:16px; line-height:1.5; }
+  .exam-score{ text-align:center; font-family:'Space Mono'; font-weight:700; margin-bottom:22px; }
+  .exam-review{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:22px; }
+  .word-chip{
+    border:2px solid var(--ink); border-radius:999px; padding:6px 14px;
+    font-family:'Space Mono'; font-size:0.76rem; font-weight:700;
+  }
+  .word-chip.correct{ background:#c9f2e4; }
+  .word-chip.wrong{ background:#ffd6d1; }
+
   footer{
     text-align:center; padding:40px 6vw 60px;
     color:rgba(45,42,50,0.6);
@@ -269,7 +340,7 @@
 
   /* ================= RESPONSIVE ================= */
   @media (max-width:820px){
-    .picker{ grid-template-columns:1fr; }
+    .picker{ grid-template-columns:repeat(2, 1fr); }
     .bubble{ display:none; }
   }
 
@@ -288,7 +359,7 @@
     .section-head{ margin-bottom:32px; }
     .section-head h2{ font-size:1.6rem; }
 
-    .picker{ gap:18px; }
+    .picker{ grid-template-columns:1fr; gap:18px; }
     .sticker{ padding:22px 20px; box-shadow:5px 5px 0 var(--ink); }
     .sticker:hover{ transform:rotate(0deg) translateY(-3px); box-shadow:6px 7px 0 var(--ink); }
 
@@ -309,6 +380,13 @@
 
     .quiz-q{ font-size:1.02rem; }
     .opt{ padding:12px 14px; font-size:0.92rem; }
+
+    .lookup-row{ flex-direction:column; }
+    .lookup-input{ width:100%; }
+
+    .exam-level{ font-size:1.7rem; }
+    .tab-btn{ font-size:0.6rem; }
+    .tab-btn .tab-icon{ font-size:1.15rem; }
 
     footer{ padding:32px 6vw 44px; }
   }
@@ -339,30 +417,35 @@
   <span class="bubble" style="top:8%;  left:45%; animation-delay:3s;">breeze</span>
 
   <h1>Let's play<br><span class="hi">with English!</span></h1>
-  <p>Flip cards, unscramble words, and beat quizzes — three tiny games that make new words stick, no textbook required.</p>
-  <button class="cta" onclick="document.getElementById('picker').scrollIntoView({behavior:'smooth'})">Start Playing 🎮</button>
+  <p>Flip cards, unscramble words, beat quizzes, and test your vocabulary level — four tiny games that make new words stick, no textbook required.</p>
+  <button class="cta" onclick="goTo('picker')">Start Playing 🎮</button>
 </section>
 
 <section id="picker">
   <div class="section-head">
     <div class="eyebrow">Pick a game</div>
-    <h2>Three ways to play today</h2>
+    <h2>Four ways to play today</h2>
   </div>
   <div class="picker">
-    <div class="sticker cards" onclick="showGame('flash')">
+    <div class="sticker cards" onclick="goTo('flash')">
       <div class="icon">🃏</div>
       <h3>Flashcards</h3>
       <p>Flip cards to reveal meanings and example sentences.</p>
     </div>
-    <div class="sticker scramble" onclick="showGame('scramble')">
+    <div class="sticker scramble" onclick="goTo('scramble')">
       <div class="icon">🔤</div>
       <h3>Word Scramble</h3>
       <p>Unjumble the letters before you run out of tries.</p>
     </div>
-    <div class="sticker quiz" onclick="showGame('quiz')">
+    <div class="sticker quiz" onclick="goTo('quiz')">
       <div class="icon">🧠</div>
       <h3>Quick Quiz</h3>
       <p>Answer fun multiple-choice questions on grammar and words.</p>
+    </div>
+    <div class="sticker exam" onclick="goTo('exam')">
+      <div class="icon">🎓</div>
+      <h3>Vocabulary Exam</h3>
+      <p>A 10-question adaptive test that tells you your level.</p>
     </div>
   </div>
 </section>
@@ -374,6 +457,11 @@
       <h3>🃏 Flashcards</h3>
       <span class="tag mono" id="flashCounter">1 / 10</span>
     </div>
+    <div class="lookup-row">
+      <input class="lookup-input" id="lookupInput" placeholder="Look up any word…" autocomplete="off" onkeydown="if(event.key==='Enter')lookupWord()">
+      <button class="btn primary" onclick="lookupWord()">🔍 Look Up</button>
+    </div>
+    <div class="lookup-status" id="lookupStatus"></div>
     <div class="flash-stage">
       <div class="flash-card" id="flashCard" onclick="flipCard()">
         <div class="face front">
@@ -384,13 +472,16 @@
         <div class="face back">
           <div class="def" id="flashDef"></div>
           <div class="ex" id="flashEx"></div>
+          <div class="related" id="flashRelated"></div>
         </div>
       </div>
     </div>
+    <button class="audio-btn" id="audioBtn" onclick="playAudio(event)">🔊 Hear it</button>
     <div class="row-btns">
       <button class="btn ghost" onclick="prevCard()">◀ Back</button>
       <button class="btn primary" onclick="nextCard()">Next ▶</button>
     </div>
+    <div class="source-note">Powered by the Free Dictionary API + Datamuse (related words)</div>
   </div>
 </section>
 
@@ -408,7 +499,9 @@
     <div class="row-btns">
       <button class="btn ghost" onclick="newScramble()">🔀 Reshuffle</button>
       <button class="btn primary" onclick="checkScramble()">Check ✓</button>
+      <button class="btn small" onclick="fetchLiveScrambleWord()">🌐 New Live Word</button>
     </div>
+    <div class="source-note">Powered by Datamuse (words) + the Free Dictionary API (hints)</div>
   </div>
 </section>
 
@@ -422,9 +515,57 @@
     <div class="quiz-q" id="quizQ"></div>
     <div class="quiz-opts" id="quizOpts"></div>
     <div class="feedback" id="quizFeedback"></div>
+    <div class="feedback-extra" id="quizExtra"></div>
     <div class="row-btns">
       <button class="btn primary" id="quizNextBtn" onclick="nextQuiz()" style="display:none;">Next Question ▶</button>
     </div>
+    <div class="source-note">Questions are shuffled, and roughly 1 in 3 is a live bonus round — powered by Datamuse + the Free Dictionary API</div>
+  </div>
+</section>
+
+<!-- EXAM -->
+<section id="exam-panel" style="display:none;">
+  <div class="panel">
+    <div class="panel-title">
+      <h3>🎓 Vocabulary Exam</h3>
+      <span class="tag mono" id="examCounter">Ready</span>
+    </div>
+
+    <div id="examIntro" class="exam-intro">
+      <p>10 questions, adaptive difficulty. Answer well and the words get harder; miss a few and they'll ease up. At the end you'll get an estimated vocabulary level.</p>
+      <div class="exam-tier-preview">
+        <span class="tag">🟢 Beginner words</span>
+        <span class="tag">🟡 Intermediate words</span>
+        <span class="tag">🔴 Advanced words</span>
+      </div>
+      <div class="row-btns">
+        <button class="btn primary" onclick="startExam()">Start Exam ▶</button>
+      </div>
+    </div>
+
+    <div id="examBody" style="display:none;">
+      <div class="exam-progress-track"><div class="exam-progress-fill" id="examProgressFill"></div></div>
+      <div class="exam-timer" id="examTimer">⏱ 20s</div>
+      <div class="quiz-q" id="examQ"></div>
+      <div class="quiz-opts" id="examOpts"></div>
+      <div class="feedback" id="examFeedback"></div>
+      <div class="feedback-extra" id="examExtra"></div>
+      <div class="row-btns">
+        <button class="btn primary" id="examNextBtn" onclick="nextExamQuestion()" style="display:none;">Next ▶</button>
+      </div>
+    </div>
+
+    <div id="examResults" style="display:none;">
+      <div class="exam-level" id="examLevelLabel"></div>
+      <div class="exam-level-desc" id="examLevelDesc"></div>
+      <div class="exam-score" id="examScoreLine"></div>
+      <div class="exam-review" id="examReview"></div>
+      <div class="row-btns">
+        <button class="btn primary" onclick="startExam()">Retake Exam 🔁</button>
+      </div>
+    </div>
+
+    <div class="source-note">Adaptive difficulty · powered by the Free Dictionary API + Datamuse</div>
   </div>
 </section>
 
@@ -432,6 +573,14 @@
   <div class="h">Keep going — a little play every day adds up. 🌱</div>
   Made for anyone who'd rather learn English by playing than memorizing.
 </footer>
+
+<div class="app-tabbar">
+  <button class="tab-btn active" data-tab="picker" onclick="goTo('picker')"><span class="tab-icon">🏠</span><span>Home</span></button>
+  <button class="tab-btn" data-tab="flash" onclick="goTo('flash')"><span class="tab-icon">🃏</span><span>Cards</span></button>
+  <button class="tab-btn" data-tab="scramble" onclick="goTo('scramble')"><span class="tab-icon">🔤</span><span>Scramble</span></button>
+  <button class="tab-btn" data-tab="quiz" onclick="goTo('quiz')"><span class="tab-icon">🧠</span><span>Quiz</span></button>
+  <button class="tab-btn" data-tab="exam" onclick="goTo('exam')"><span class="tab-icon">🎓</span><span>Exam</span></button>
+</div>
 
 <script>
 /* ---------------- SCORE ---------------- */
@@ -442,8 +591,21 @@ function addPoint(correct){
   document.getElementById('streakVal').textContent = streak;
 }
 
+function goTo(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab === name);
+  });
+  if(name === 'picker'){
+    ['flash','scramble','quiz','exam'].forEach(n=>{
+      document.getElementById(n+'-panel').style.display = 'none';
+    });
+    document.getElementById('picker').scrollIntoView({behavior:'smooth', block:'start'});
+  } else {
+    showGame(name);
+  }
+}
 function showGame(name){
-  ['flash','scramble','quiz'].forEach(n=>{
+  ['flash','scramble','quiz','exam'].forEach(n=>{
     document.getElementById(n+'-panel').style.display = (n===name)?'block':'none';
   });
   document.getElementById(name+'-panel').scrollIntoView({behavior:'smooth', block:'start'});
@@ -462,20 +624,89 @@ const flashData = [
   {word:"Whisper", pos:"verb", def:"to speak very quietly", ex:"She whispered the secret to me."},
   {word:"Grateful", pos:"adjective", def:"feeling thankful", ex:"I'm grateful for your help."}
 ];
-let flashIndex = 0;
-function renderFlash(){
-  const c = flashData[flashIndex];
+let flashOrder = shuffleArray(flashData.map((_,i)=>i));
+let flashPos = 0;
+let currentAudioUrl = '';
+
+function renderCard(c){
   document.getElementById('flashWord').textContent = c.word;
-  document.getElementById('flashPos').textContent = c.pos;
+  document.getElementById('flashPos').textContent = c.pos || '';
   document.getElementById('flashDef').textContent = c.def;
-  document.getElementById('flashEx').textContent = c.ex;
-  document.getElementById('flashCounter').textContent = (flashIndex+1)+" / "+flashData.length;
+  document.getElementById('flashEx').textContent = c.ex || '';
   document.getElementById('flashCard').classList.remove('flipped');
+  currentAudioUrl = c.audio || '';
+  document.getElementById('audioBtn').style.display = currentAudioUrl ? 'block' : 'none';
+  fetchRelatedWords(c.word);
+}
+const relatedCache = {};
+async function fetchRelatedWords(word){
+  const el = document.getElementById('flashRelated');
+  el.textContent = 'Related words: loading…';
+  const key = word.toLowerCase();
+  try{
+    let words = relatedCache[key];
+    if(!words){
+      const res = await fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&max=5');
+      const data = await res.json();
+      words = data.map(d=>d.word).filter(w=>w.toLowerCase()!==key).slice(0,4);
+      relatedCache[key] = words;
+    }
+    el.innerHTML = words.length ? '<b>Related words:</b> '+words.join(', ') : '';
+  } catch(err){
+    el.textContent = '';
+  }
+}
+function renderFlash(){
+  const c = flashData[flashOrder[flashPos]];
+  renderCard(c);
+  document.getElementById('flashCounter').textContent = (flashPos+1)+" / "+flashData.length;
 }
 function flipCard(){ document.getElementById('flashCard').classList.toggle('flipped'); }
-function nextCard(){ flashIndex = (flashIndex+1) % flashData.length; renderFlash(); }
-function prevCard(){ flashIndex = (flashIndex-1+flashData.length) % flashData.length; renderFlash(); }
+function nextCard(){
+  flashPos++;
+  if(flashPos >= flashOrder.length){ flashOrder = shuffleArray(flashData.map((_,i)=>i)); flashPos = 0; }
+  renderFlash();
+}
+function prevCard(){
+  flashPos--;
+  if(flashPos < 0){ flashOrder = shuffleArray(flashData.map((_,i)=>i)); flashPos = flashOrder.length-1; }
+  renderFlash();
+}
+function playAudio(e){
+  if(e) e.stopPropagation();
+  if(currentAudioUrl){ new Audio(currentAudioUrl).play().catch(()=>{}); }
+}
 renderFlash();
+
+async function lookupWord(){
+  const raw = document.getElementById('lookupInput').value.trim();
+  const status = document.getElementById('lookupStatus');
+  if(!raw){ return; }
+  status.className = 'lookup-status';
+  status.textContent = 'Looking up "'+raw+'"…';
+  document.getElementById('flashCounter').textContent = 'live lookup';
+  try{
+    const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(raw));
+    if(!res.ok) throw new Error('not found');
+    const data = await res.json();
+    const entry = data[0];
+    const meaning = (entry.meanings || []).find(m => (m.definitions||[]).length) || entry.meanings[0];
+    const defObj = (meaning.definitions||[]).find(d => d.example) || meaning.definitions[0];
+    const audioPhon = (entry.phonetics || []).find(p => p.audio);
+    renderCard({
+      word: entry.word,
+      pos: meaning.partOfSpeech,
+      def: defObj.definition,
+      ex: defObj.example || '(no example sentence available)',
+      audio: audioPhon ? audioPhon.audio : ''
+    });
+    status.textContent = "Found it! Tap the card to flip.";
+  } catch(err){
+    status.className = 'lookup-status err';
+    status.textContent = "Couldn't find \""+raw+"\" — showing our built-in list instead.";
+    setTimeout(()=>{ renderFlash(); status.textContent=''; }, 2200);
+  }
+}
 
 /* ---------------- SCRAMBLE ---------------- */
 const scrambleData = [
@@ -488,21 +719,26 @@ const scrambleData = [
   {word:"MUSIC", hint:"Something you listen to and dance to."},
   {word:"RAINBOW", hint:"Colorful arc that appears after rain."}
 ];
-let scrambleIndex = 0;
+let scrambleOrder = shuffleArray(scrambleData.map((_,i)=>i));
+let scramblePos = 0;
+let scrambleLiveMode = false;
+let currentScrambleItem = scrambleData[0];
+
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
 function shuffleWord(w){
-  let arr = w.split('');
   let shuffled;
-  do{
-    for(let i=arr.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [arr[i],arr[j]] = [arr[j],arr[i]];
-    }
-    shuffled = arr.join('');
-  } while(shuffled === w);
+  do{ shuffled = shuffleArray(w.split('')).join(''); } while(shuffled === w && w.length > 1);
   return shuffled;
 }
-function newScramble(){
-  const item = scrambleData[scrambleIndex];
+function renderScrambleItem(item, label){
+  currentScrambleItem = item;
   const shuffled = shuffleWord(item.word);
   const box = document.getElementById('scrambleLetters');
   box.innerHTML = '';
@@ -515,10 +751,16 @@ function newScramble(){
   document.getElementById('scrambleHint').textContent = "💡 " + item.hint;
   document.getElementById('scrambleInput').value = '';
   document.getElementById('scrambleFeedback').textContent = '';
-  document.getElementById('scrambleCounter').textContent = (scrambleIndex+1)+" / "+scrambleData.length;
+  const counter = document.getElementById('scrambleCounter');
+  counter.textContent = label;
+  counter.className = scrambleLiveMode ? 'tag mono live' : 'tag mono';
+}
+function newScramble(){
+  scrambleLiveMode = false;
+  renderScrambleItem(scrambleData[scrambleOrder[scramblePos]], (scramblePos+1)+" / "+scrambleData.length);
 }
 function checkScramble(){
-  const item = scrambleData[scrambleIndex];
+  const item = currentScrambleItem;
   const guess = document.getElementById('scrambleInput').value.trim().toUpperCase();
   const fb = document.getElementById('scrambleFeedback');
   if(guess === item.word){
@@ -526,8 +768,13 @@ function checkScramble(){
     fb.className = "feedback good";
     addPoint(true);
     setTimeout(()=>{
-      scrambleIndex = (scrambleIndex+1) % scrambleData.length;
-      newScramble();
+      if(scrambleLiveMode){
+        fetchLiveScrambleWord();
+      } else {
+        scramblePos++;
+        if(scramblePos >= scrambleOrder.length){ scrambleOrder = shuffleArray(scrambleData.map((_,i)=>i)); scramblePos = 0; }
+        newScramble();
+      }
     }, 900);
   } else {
     fb.textContent = "Almost! Try again 💪";
@@ -536,6 +783,46 @@ function checkScramble(){
   }
 }
 newScramble();
+
+async function fetchLiveScrambleWord(){
+  const fb = document.getElementById('scrambleFeedback');
+  fb.className = 'feedback';
+  fb.textContent = 'Fetching a fresh word…';
+  scrambleLiveMode = true;
+  try{
+    const length = 5 + Math.floor(Math.random()*4); // 5-8 letters
+    const pattern = '?'.repeat(length);
+    const res = await fetch('https://api.datamuse.com/words?sp='+pattern+'&max=100&md=f');
+    const list = await res.json();
+    const common = list.filter(w=>{
+      if(!/^[a-zA-Z]+$/.test(w.word)) return false;
+      const tag = (w.tags||[]).find(t=>t.startsWith('f:'));
+      const freq = tag ? parseFloat(tag.slice(2)) : 0;
+      return freq > 3;
+    });
+    const pool = common.length ? common : list.filter(w=>/^[a-zA-Z]+$/.test(w.word));
+    if(!pool.length) throw new Error('no words found');
+    const pick = pool[Math.floor(Math.random()*Math.min(20,pool.length))];
+    const word = pick.word.toUpperCase();
+
+    let hint = "Unscramble this common English word!";
+    try{
+      const dRes = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(pick.word));
+      if(dRes.ok){
+        const dData = await dRes.json();
+        const meaning = dData[0].meanings[0];
+        hint = meaning.definitions[0].definition;
+      }
+    }catch(_){ /* keep default hint */ }
+
+    renderScrambleItem({word, hint}, '🌐 live');
+    fb.textContent = '';
+  } catch(err){
+    fb.className = 'feedback bad';
+    fb.textContent = "Couldn't reach the word API — back to our list.";
+    setTimeout(()=>{ newScramble(); }, 1600);
+  }
+}
 
 /* ---------------- QUIZ ---------------- */
 const quizData = [
@@ -548,12 +835,62 @@ const quizData = [
   {q:"Which sentence is correct?", opts:["He don\'t like coffee.","He doesn\'t likes coffee.","He doesn\'t like coffee.","He not like coffee."], correct:2},
   {q:'What\'s the past tense of "go"?', opts:["Goed","Went","Gone","Going"], correct:1}
 ];
-let quizIndex = 0;
-function renderQuiz(){
-  const item = quizData[quizIndex];
+const quizSeedWords = ["happy","fast","begin","tiny","brave","angry","quiet","clever","tired","kind","strong","gentle"];
+const synonymCache = {};
+const LIVE_CHANCE = 0.35; // ~1 in 3 questions is a fresh live round
+let quizQueue = shuffleArray(quizData.map((_,i)=>i));
+let quizAsked = 0;
+
+function shuffledQuestion(item){
+  const order = shuffleArray(item.opts.map((_,i)=>i));
+  return {
+    q: item.q,
+    opts: order.map(i=>item.opts[i]),
+    correct: order.indexOf(item.correct)
+  };
+}
+function nextStaticQuestion(){
+  if(quizQueue.length === 0){ quizQueue = shuffleArray(quizData.map((_,i)=>i)); }
+  const idx = quizQueue.pop();
+  return shuffledQuestion(quizData[idx]);
+}
+
+async function getSynonyms(word){
+  if(synonymCache[word]) return synonymCache[word];
+  const res = await fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&max=8');
+  const data = await res.json();
+  const words = data.map(d=>d.word).filter(w=>/^[a-zA-Z]+$/.test(w) && w.toLowerCase() !== word.toLowerCase());
+  synonymCache[word] = words;
+  return words;
+}
+
+async function generateLiveQuestion(){
+  const seeds = shuffleArray(quizSeedWords);
+  const mainSeed = seeds[0];
+  const mainSyns = await getSynonyms(mainSeed);
+  if(!mainSyns.length) throw new Error('no synonyms');
+  const correct = mainSyns[Math.floor(Math.random()*Math.min(3,mainSyns.length))];
+
+  const distractors = [];
+  for(let i=1; i<seeds.length && distractors.length<3; i++){
+    const syns = await getSynonyms(seeds[i]);
+    const pick = syns.find(w => w.toLowerCase()!==correct.toLowerCase() && !distractors.includes(w));
+    if(pick) distractors.push(pick);
+  }
+  if(distractors.length < 3) throw new Error('not enough distractors');
+
+  const opts = shuffleArray([correct, ...distractors]);
+  const correctIndex = opts.indexOf(correct);
+  return {
+    q: 'Which word is closest in meaning to "'+mainSeed+'"?',
+    opts, correct: correctIndex, isLive: true
+  };
+}
+
+function renderQuestion(item){
   document.getElementById('quizQ').textContent = item.q;
-  document.getElementById('quizCounter').textContent = (quizIndex+1)+" / "+quizData.length;
   document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizExtra').textContent = '';
   document.getElementById('quizNextBtn').style.display = 'none';
   const box = document.getElementById('quizOpts');
   box.innerHTML = '';
@@ -561,15 +898,40 @@ function renderQuiz(){
     const btn = document.createElement('div');
     btn.className = 'opt';
     btn.textContent = opt;
-    btn.onclick = ()=>answerQuiz(i, btn);
+    btn.onclick = ()=>answerQuiz(i, btn, item);
     box.appendChild(btn);
   });
 }
-function answerQuiz(i, el){
-  const item = quizData[quizIndex];
+
+async function renderQuiz(){
+  const counter = document.getElementById('quizCounter');
+  quizAsked++;
+  const wantsLive = Math.random() < LIVE_CHANCE;
+  if(wantsLive){
+    counter.textContent = '🌐 fetching…';
+    counter.className = 'tag mono loading';
+    document.getElementById('quizQ').textContent = 'Fetching a live bonus question…';
+    document.getElementById('quizOpts').innerHTML = '';
+    try{
+      const live = await generateLiveQuestion();
+      counter.textContent = '🌐 Q'+quizAsked+' · bonus round';
+      counter.className = 'tag mono live';
+      renderQuestion(live);
+      return;
+    } catch(err){
+      // fall through to a static question below
+    }
+  }
+  counter.textContent = '📖 Q'+quizAsked;
+  counter.className = 'tag mono';
+  renderQuestion(nextStaticQuestion());
+}
+function answerQuiz(i, el, item){
   const opts = document.querySelectorAll('#quizOpts .opt');
   opts.forEach(o=>o.onclick=null);
   const fb = document.getElementById('quizFeedback');
+  const extra = document.getElementById('quizExtra');
+  extra.textContent = '';
   if(i === item.correct){
     el.classList.add('correct');
     fb.textContent = "Correct! 🎉";
@@ -583,12 +945,263 @@ function answerQuiz(i, el){
     addPoint(false);
   }
   document.getElementById('quizNextBtn').style.display = 'inline-block';
+  if(item.isLive){
+    fetchQuizDefinition(item.opts[item.correct]);
+  }
+}
+async function fetchQuizDefinition(word){
+  const extra = document.getElementById('quizExtra');
+  extra.textContent = 'Looking up "'+word+'"…';
+  try{
+    const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word));
+    if(!res.ok) throw new Error('not found');
+    const data = await res.json();
+    const meaning = data[0].meanings[0];
+    const def = meaning.definitions[0].definition;
+    extra.textContent = '💡 "'+word+'" ('+meaning.partOfSpeech+'): '+def;
+  } catch(err){
+    extra.textContent = '';
+  }
 }
 function nextQuiz(){
-  quizIndex = (quizIndex+1) % quizData.length;
   renderQuiz();
 }
 renderQuiz();
+
+/* ---------------- EXAM MODE ---------------- */
+const examTiers = [
+  ["happy","big","fast","small","hot","cold","easy","hard","friendly","quiet"],
+  ["cautious","generous","ancient","fragile","diligent","elaborate","reluctant","anxious","stubborn","vivid"],
+  ["ubiquitous","ephemeral","meticulous","magnanimous","esoteric","perfunctory","tenacious","candid","austere","ambiguous"]
+];
+const examTierLabels = ["🟢 Beginner", "🟡 Intermediate", "🔴 Advanced"];
+const examFallbackDefs = [
+  {word:"HAPPY", tier:0, def:"Feeling or showing pleasure and contentment."},
+  {word:"FAST", tier:0, def:"Moving or capable of moving at high speed."},
+  {word:"FRIENDLY", tier:0, def:"Kind and pleasant towards others."},
+  {word:"CAUTIOUS", tier:1, def:"Careful to avoid potential problems or dangers."},
+  {word:"ANCIENT", tier:1, def:"Belonging to the very distant past."},
+  {word:"GENEROUS", tier:1, def:"Showing a readiness to give more than is necessary."},
+  {word:"UBIQUITOUS", tier:2, def:"Present, appearing, or found everywhere."},
+  {word:"ESOTERIC", tier:2, def:"Intended for or understood by only a small number of people."},
+  {word:"TENACIOUS", tier:2, def:"Tending to keep a firm hold on something; persistent."}
+];
+
+const EXAM_LENGTH = 10;
+const EXAM_TIME = 20; // seconds per question
+let examTierIdx = 1;
+let examQIndex = 0;
+let examResultsLog = [];
+let examUsedWords = new Set();
+let currentExamItem = null;
+let examTimerInterval = null;
+let examTimeLeft = EXAM_TIME;
+
+async function fetchWordDef(word){
+  const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word));
+  if(!res.ok) throw new Error('not found');
+  const data = await res.json();
+  const meaning = data[0].meanings.find(m => (m.definitions||[]).length) || data[0].meanings[0];
+  const defObj = meaning.definitions[0];
+  return { definition: defObj.definition, example: defObj.example || '' };
+}
+
+function pickTierWord(tierIdx){
+  const pool = examTiers[tierIdx].filter(w => !examUsedWords.has(w));
+  if(pool.length) return pool[Math.floor(Math.random()*pool.length)];
+  // tier exhausted — widen search to any unused word across all tiers
+  const anyPool = examTiers.flat().filter(w => !examUsedWords.has(w));
+  if(anyPool.length) return anyPool[Math.floor(Math.random()*anyPool.length)];
+  return null; // fully exhausted, caller falls back
+}
+
+async function buildExamQuestion(tierIdx){
+  const word = pickTierWord(tierIdx);
+  if(!word) throw new Error('word pool exhausted');
+  const correctInfo = await fetchWordDef(word);
+
+  const distractorWords = shuffleArray(examTiers[tierIdx].filter(w => w !== word)).slice(0,3);
+  const distractorDefs = [];
+  for(const dw of distractorWords){
+    try{
+      const info = await fetchWordDef(dw);
+      distractorDefs.push(info.definition);
+    }catch(_){ /* skip failed distractor, try backfill below */ }
+  }
+  // backfill from other tiers if we came up short
+  if(distractorDefs.length < 3){
+    const backupPool = shuffleArray(examTiers.flat().filter(w => w !== word && !distractorWords.includes(w)));
+    for(const w of backupPool){
+      if(distractorDefs.length >= 3) break;
+      try{ const info = await fetchWordDef(w); distractorDefs.push(info.definition); }catch(_){ /* keep trying */ }
+    }
+  }
+  if(distractorDefs.length < 3) throw new Error('not enough distractors');
+
+  examUsedWords.add(word);
+  const opts = shuffleArray([correctInfo.definition, ...distractorDefs.slice(0,3)]);
+  const correctIndex = opts.indexOf(correctInfo.definition);
+  return { word: word.toUpperCase(), tier: tierIdx, opts, correct: correctIndex, example: correctInfo.example };
+}
+
+function buildFallbackExamQuestion(tierIdx){
+  const unused = examFallbackDefs.filter(f => !examUsedWords.has(f.word));
+  const pool = unused.length ? unused : examFallbackDefs;
+  const tierMatch = pool.filter(f=>f.tier===tierIdx);
+  const correct = (tierMatch.length ? tierMatch : pool)[Math.floor(Math.random()*(tierMatch.length?tierMatch.length:pool.length))];
+  examUsedWords.add(correct.word);
+  const others = shuffleArray(examFallbackDefs.filter(f => f.word !== correct.word)).slice(0,3).map(f=>f.def);
+  const opts = shuffleArray([correct.def, ...others]);
+  return { word: correct.word, tier: correct.tier, opts, correct: opts.indexOf(correct.def), example: '' };
+}
+
+function startExam(){
+  examTierIdx = 1;
+  examQIndex = 0;
+  examResultsLog = [];
+  examUsedWords = new Set();
+  document.getElementById('examIntro').style.display = 'none';
+  document.getElementById('examResults').style.display = 'none';
+  document.getElementById('examBody').style.display = 'block';
+  loadExamQuestion();
+}
+
+function updateExamProgress(){
+  document.getElementById('examProgressFill').style.width = ((examQIndex)/EXAM_LENGTH*100)+'%';
+  document.getElementById('examCounter').textContent = 'Q'+examQIndex+' / '+EXAM_LENGTH;
+}
+
+async function loadExamQuestion(){
+  examQIndex++;
+  updateExamProgress();
+  document.getElementById('examQ').textContent = 'Loading question…';
+  document.getElementById('examOpts').innerHTML = '';
+  document.getElementById('examFeedback').textContent = '';
+  document.getElementById('examExtra').textContent = '';
+  document.getElementById('examNextBtn').style.display = 'none';
+
+  try{
+    currentExamItem = await buildExamQuestion(examTierIdx);
+  } catch(err){
+    currentExamItem = buildFallbackExamQuestion(examTierIdx);
+  }
+
+  document.getElementById('examQ').textContent = 'What does "'+currentExamItem.word+'" mean?';
+  const box = document.getElementById('examOpts');
+  box.innerHTML = '';
+  currentExamItem.opts.forEach((opt,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.onclick = ()=>answerExam(i, btn);
+    box.appendChild(btn);
+  });
+
+  startExamTimer();
+}
+
+function startExamTimer(){
+  clearInterval(examTimerInterval);
+  examTimeLeft = EXAM_TIME;
+  const timerEl = document.getElementById('examTimer');
+  timerEl.textContent = '⏱ '+examTimeLeft+'s';
+  timerEl.className = 'exam-timer';
+  examTimerInterval = setInterval(()=>{
+    examTimeLeft--;
+    timerEl.textContent = '⏱ '+examTimeLeft+'s';
+    if(examTimeLeft <= 5) timerEl.className = 'exam-timer low';
+    if(examTimeLeft <= 0){
+      clearInterval(examTimerInterval);
+      answerExam(-1, null);
+    }
+  }, 1000);
+}
+
+function answerExam(i, el){
+  clearInterval(examTimerInterval);
+  const opts = document.querySelectorAll('#examOpts .opt');
+  opts.forEach(o=>o.onclick=null);
+  const fb = document.getElementById('examFeedback');
+  const correct = (i === currentExamItem.correct);
+
+  if(correct){
+    if(el) el.classList.add('correct');
+    fb.textContent = "Correct! 🎉";
+    fb.className = "feedback good";
+  } else {
+    if(el) el.classList.add('wrong');
+    opts[currentExamItem.correct].classList.add('correct');
+    fb.textContent = (i===-1) ? "⏰ Time's up!" : "Not quite.";
+    fb.className = "feedback bad";
+  }
+  addPoint(correct);
+
+  examResultsLog.push({ word: currentExamItem.word, tier: currentExamItem.tier, correct });
+  examTierIdx = correct ? Math.min(examTierIdx+1, 2) : Math.max(examTierIdx-1, 0);
+
+  let extraText = currentExamItem.example ? '💡 Example: "'+currentExamItem.example+'"' : '';
+  document.getElementById('examExtra').textContent = extraText;
+  fetchExamRelated(currentExamItem.word, extraText);
+
+  document.getElementById('examNextBtn').style.display = 'inline-block';
+  document.getElementById('examNextBtn').textContent = (examQIndex >= EXAM_LENGTH) ? 'See My Results 🎓' : 'Next ▶';
+}
+
+async function fetchExamRelated(word, baseText){
+  try{
+    const res = await fetch('https://api.datamuse.com/words?ml='+encodeURIComponent(word)+'&max=4');
+    const data = await res.json();
+    const words = data.map(d=>d.word).filter(w=>/^[a-zA-Z]+$/.test(w) && w.toLowerCase()!==word.toLowerCase()).slice(0,4);
+    if(words.length){
+      const relatedLine = 'Related: '+words.join(', ');
+      document.getElementById('examExtra').textContent = baseText ? baseText+'  ·  '+relatedLine : relatedLine;
+    }
+  }catch(err){ /* silently skip bonus info */ }
+}
+
+function nextExamQuestion(){
+  if(examQIndex >= EXAM_LENGTH){
+    finishExam();
+  } else {
+    loadExamQuestion();
+  }
+}
+
+function finishExam(){
+  clearInterval(examTimerInterval);
+  document.getElementById('examBody').style.display = 'none';
+  document.getElementById('examResults').style.display = 'block';
+  document.getElementById('examCounter').textContent = 'Complete';
+
+  const tierWeight = [1,2,3];
+  let earned = 0, possible = 0, correctCount = 0;
+  examResultsLog.forEach(r=>{
+    const w = tierWeight[r.tier];
+    possible += w;
+    if(r.correct){ earned += w; correctCount++; }
+  });
+  const pct = possible ? (earned/possible*100) : 0;
+
+  let level, desc;
+  if(pct < 30){ level='Beginner'; desc='You know common everyday words. Keep practicing with Flashcards and Quick Quiz to build your base.'; }
+  else if(pct < 50){ level='Elementary'; desc='You have a solid grip on everyday vocabulary and are starting to recognize less common words.'; }
+  else if(pct < 70){ level='Intermediate'; desc='You handle everyday and moderately advanced vocabulary comfortably.'; }
+  else if(pct < 85){ level='Advanced'; desc='You recognize a wide range of vocabulary, including many advanced and less common words.'; }
+  else { level='Proficient'; desc='You have a strong, wide-ranging vocabulary, including rare and advanced words.'; }
+
+  document.getElementById('examLevelLabel').textContent = '🎓 '+level;
+  document.getElementById('examLevelDesc').textContent = desc;
+  document.getElementById('examScoreLine').textContent = correctCount+' / '+EXAM_LENGTH+' correct  ·  '+Math.round(pct)+'% weighted score';
+
+  const review = document.getElementById('examReview');
+  review.innerHTML = '';
+  examResultsLog.forEach(r=>{
+    const chip = document.createElement('span');
+    chip.className = 'word-chip ' + (r.correct ? 'correct' : 'wrong');
+    chip.textContent = (r.correct ? '✅ ' : '❌ ') + r.word;
+    review.appendChild(chip);
+  });
+}
 </script>
 </body>
 </html>
